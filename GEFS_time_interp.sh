@@ -58,9 +58,13 @@ doy=`date  --date=$yyyymmdd +%j `
       while [ ! -s ${datadir}/$in1 ] || [ ! -s  ${datadir}/$in2 ]; do  
         sleep 30
       done
-      ln -sf ${datadir}/$in1 .
-      ln -sf ${datadir}/$in2 .
-
+      if [ ! -s $in1 ]; then
+        ln -sf ${datadir}/$in1 .
+      fi  
+      if [ ! -s $in2 ]; then
+        ln -sf ${datadir}/$in2 .
+      fi  
+      
 #in1=2209406000003
 #in2=2209406000006
 #a="3 hour forecast"
