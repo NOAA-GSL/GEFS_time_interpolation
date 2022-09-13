@@ -66,16 +66,11 @@ tasks; and the "FCST" type is used for the RUN_FCST_TN task.
     <envar><name>GEFS_targetdir</name><value>&GEFS_TARGETDIR;/gep#mem#</value></envar>
 
     <dependency>
-       <and>
-         <datadep age="00:00:05:00"><cyclestr offset="-4:00:00">/mnt/lfs4/BMC/public/data/grids/gens/pgrb2b/gep#mem#/@y@j@H000006</cyclestr></datadep>
-         <datadep age="00:00:05:00"><cyclestr offset="-4:00:00">/mnt/lfs4/BMC/public/data/grids/gens/pgrb2b/gep#mem#/@y@j@H000009</cyclestr></datadep>
-         <datadep age="00:00:05:00"><cyclestr offset="-4:00:00">/mnt/lfs4/BMC/public/data/grids/gens/pgrb2b/gep#mem#/@y@j@H000012</cyclestr></datadep>
-         <datadep age="00:00:05:00"><cyclestr offset="-4:00:00">/mnt/lfs4/BMC/public/data/grids/gens/pgrb2b/gep#mem#/@y@j@H000015</cyclestr></datadep>
-         <datadep age="00:00:05:00"><cyclestr offset="-4:00:00">/mnt/lfs4/BMC/public/data/grids/gens/pgrb2b/gep#mem#/@y@j@H000018</cyclestr></datadep>
-         <datadep age="00:00:05:00"><cyclestr offset="-4:00:00">/mnt/lfs4/BMC/public/data/grids/gens/pgrb2b/gep#mem#/@y@j@H000021</cyclestr></datadep>
-         <datadep age="00:00:05:00"><cyclestr offset="-4:00:00">/mnt/lfs4/BMC/public/data/grids/gens/pgrb2b/gep#mem#/@y@j@H000024</cyclestr></datadep>
-         <datadep age="00:00:05:00"><cyclestr offset="-4:00:00">/mnt/lfs4/BMC/public/data/grids/gens/pgrb2b/gep#mem#/@y@j@H000027</cyclestr></datadep>
-       </and>
+      <sh>
+        test $(find <cyclestr offset="-4:00:00">&GEFS_SOURCEDIR;/gep#mem#/@y@j@H*{06..30..03} \
+           -mmin +5 | wc -l)</cyclestr> \
+        -gt  $(( (30-6)/3 ))
+      </sh>
     </dependency>
 
   </task>
