@@ -12,7 +12,6 @@ Parameters needed by the job scheduler.
 Workflow task names.
 -->
 <!ENTITY GET_GEFS_LBCS_TN "get_gefs_lbcs">
-
 <!ENTITY NCORES_PER_NODE "24">
 
 <!--
@@ -30,7 +29,7 @@ tasks other than GET_EXTRN_ICS_TN, GET_EXTRN_LBCS_TN, and RUN_FCST_TN;
 the "HPSS" type is used for the GET_EXTRN_ICS_TN and GET_EXTRN_LBCS_TN 
 tasks; and the "FCST" type is used for the RUN_FCST_TN task.
 -->
-<!ENTITY RSRV_DEFAULT "<account>&ACCOUNT;</account><queue>&QUEUE_DEFAULT;</queue><partition>kjet</partition>">
+<!ENTITY RSRV_DEFAULT "<account>&ACCOUNT;</account><queue>&QUEUE_DEFAULT;</queue><partition>sjet,vjet,kjet,xjet</partition>">
 
 ]>
 <workflow realtime="T" scheduler="&SCHED;" cyclethrottle="24" cyclelifespan="01:00:00:00">
