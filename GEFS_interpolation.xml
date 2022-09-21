@@ -4,11 +4,9 @@
 <!--
 Parameters needed by the job scheduler.
 -->
-<!ENTITY ACCOUNT         "rtwrfruc">
-<!ENTITY SERVICE_ACCOUNT "rtrr">
+<!ENTITY ACCOUNT         "nrtrr">
 <!ENTITY SCHED           "slurm">
-<!ENTITY QUEUE_DEFAULT   "rth">
-<!ENTITY RRFS_RESERVE  "--reservation=rrfsens">
+<!ENTITY QUEUE_DEFAULT   "batch">
 
 <!--
 Workflow task names.
@@ -32,13 +30,13 @@ tasks other than GET_EXTRN_ICS_TN, GET_EXTRN_LBCS_TN, and RUN_FCST_TN;
 the "HPSS" type is used for the GET_EXTRN_ICS_TN and GET_EXTRN_LBCS_TN 
 tasks; and the "FCST" type is used for the RUN_FCST_TN task.
 -->
-<!ENTITY RSRV_DEFAULT "<account>&ACCOUNT;</account><queue>&QUEUE_DEFAULT;</queue><partition>kjet</partition><native>&RRFS_RESERVE;</native>">
+<!ENTITY RSRV_DEFAULT "<account>&ACCOUNT;</account><queue>&QUEUE_DEFAULT;</queue><partition>kjet</partition>">
 
 ]>
 <workflow realtime="T" scheduler="&SCHED;" cyclethrottle="24" cyclelifespan="01:00:00:00">
 
-  <cycledef group="boundary"> 202209011600 202209312300 24:00:00 </cycledef>
-  <cycledef group="clean"> 202209011200 202209312300 24:00:00 </cycledef>
+  <cycledef group="boundary"> 00 12,18 * 09-10 2022 * </cycledef>
+  <cycledef group="clean"> 202209011200 202210312300 24:00:00 </cycledef>
   <log>
     <cyclestr>&LOGDIR;/wflow.log</cyclestr>
   </log>
@@ -46,7 +44,9 @@ tasks; and the "FCST" type is used for the RUN_FCST_TN task.
  <metatask name="run_ensemble_pre">
     <var name="mem"> 01 02 03 04 05 06 07 08 09 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27 28 29 30</var>
 
-  <task name="&GET_GEFS_LBCS_TN;_mem#mem#" cycledefs="boundary" maxtries="3">
+ <metatask>
+  <var name="HR"> 12 18 </var>
+  <task name="&GET_GEFS_LBCS_TN;_mem#mem#_#HR#" cycledefs="boundary" maxtries="3">
 
     &RSRV_DEFAULT;
   
@@ -54,26 +54,27 @@ tasks; and the "FCST" type is used for the RUN_FCST_TN task.
     <cores>1</cores> 
     <walltime>01:45:00</walltime>
     <nodesize>&NCORES_PER_NODE;</nodesize>
-    <jobname>&GET_GEFS_LBCS_TN;_mem#mem#</jobname>
+    <jobname>&GET_GEFS_LBCS_TN;_mem#mem#_#HR#</jobname>
     <join><cyclestr>&LOGDIR;/&GET_GEFS_LBCS_TN;_mem#mem#_@Y@m@d@H.log</cyclestr></join>
 
     <envar><name>PDY</name><value><cyclestr>@Y@m@d</cyclestr></value></envar>
     <envar><name>CDATE</name><value><cyclestr>@Y@m@d@H</cyclestr></value></envar>
-    <envar><name>HH</name><value>12</value></envar>
+    <envar><name>HH</name><value>#HR#</value></envar>
     <envar><name>HR1</name><value>6</value></envar>
-    <envar><name>HR2</name><value>30</value></envar>
+    <envar><name>HR2</name><value>36</value></envar>
     <envar><name>GEFS_sourcedir</name><value>&GEFS_SOURCEDIR;/gep#mem#</value></envar>
     <envar><name>GEFS_targetdir</name><value>&GEFS_TARGETDIR;/gep#mem#</value></envar>
 
     <dependency>
       <sh>
-        test $(find <cyclestr offset="-4:00:00">&GEFS_SOURCEDIR;/gep#mem#/@y@j@H*{06..30..03} \
+        test $(find <cyclestr offset="-4:00:00">&GEFS_SOURCEDIR;/gep#mem#/@y@j#HR#*{06..36..03} \
            -mmin +5 | wc -l)</cyclestr> \
-        -gt  $(( (30-6)/3 ))
+        -gt  $(( (36-6)/3 ))
       </sh>
     </dependency>
 
   </task>
+  </metatask>
 
   <task name="clean_mem#mem#" cycledefs="clean" maxtries="3">
 
