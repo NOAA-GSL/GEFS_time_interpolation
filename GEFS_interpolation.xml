@@ -32,7 +32,7 @@ tasks; and the "FCST" type is used for the RUN_FCST_TN task.
 <!ENTITY RSRV_DEFAULT "<account>&ACCOUNT;</account><queue>&QUEUE_DEFAULT;</queue><partition>sjet,vjet,kjet,xjet</partition>">
 
 ]>
-<workflow realtime="T" scheduler="&SCHED;" cyclethrottle="24" cyclelifespan="01:00:00:00">
+<workflow realtime="T" scheduler="&SCHED;" cyclethrottle="5" cyclelifespan="01:00:00:00">
 
   <cycledef group="boundary"> 00 12,18 * 09-10 2022 * </cycledef>
   <cycledef group="clean"> 202209011200 202210312300 24:00:00 </cycledef>
