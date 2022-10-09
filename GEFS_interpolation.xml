@@ -56,7 +56,7 @@ tasks; and the "FCST" type is used for the RUN_FCST_TN task.
 
     <envar><name>PDY</name><value><cyclestr>@Y@m@d</cyclestr></value></envar>
     <envar><name>CDATE</name><value><cyclestr>@Y@m@d@H</cyclestr></value></envar>
-    <envar><name>HH</name><value>@H</value></envar>
+    <envar><name>HH</name><value><cyclestr>@H</cyclestr></value></envar>
     <envar><name>HR1</name><value>6</value></envar>
     <envar><name>HR2</name><value>42</value></envar>
     <envar><name>GEFS_sourcedir</name><value>&GEFS_SOURCEDIR;/gep#mem#</value></envar>
