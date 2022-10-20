@@ -71,19 +71,23 @@ doy=`date  --date=$yyyymmdd +%j `
 #a="vt=2022040409"
 a="vt=${vtime}"
 
+if [ ! -s $out1 ]; then
 d1="${fcsthr1} hour forecast"
 b1=0.6667
 c1=0.3333
 $wgrib2 $in1 -rpn sto_1 -import_grib $in2 -rpn sto_2 -set_grib_type same \
   -if ":$a:" \
      -rpn "rcl_1:$b1:*:rcl_2:$c1:*:+" -set_ftime "$d1" -set_scaling same same -grib_out $out1 
+fi
 
+if [ ! -s $out2 ]; then
 d2="${fcsthr2} hour forecast"
 b2=0.3333
 c2=0.6667
 $wgrib2 $in1 -rpn sto_1 -import_grib $in2 -rpn sto_2 -set_grib_type same \
   -if ":$a:" \
      -rpn "rcl_1:$b2:*:rcl_2:$c2:*:+" -set_ftime "$d2" -set_scaling same same -grib_out $out2 
+fi
 
       done
 #    done
